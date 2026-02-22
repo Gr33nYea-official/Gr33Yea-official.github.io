@@ -21,7 +21,7 @@ if (savedTheme === 'dark') {
 // Переключение темы
 themeToggle.addEventListener('click', () => {
     body.classList.toggle('dark');
-
+    
     if (body.classList.contains('dark')) {
         themeToggle.textContent = '☀️';
         localStorage.setItem('theme', 'dark');
@@ -29,7 +29,7 @@ themeToggle.addEventListener('click', () => {
         themeToggle.textContent = '🌙';
         localStorage.setItem('theme', 'light');
     }
-
+    
     // Анимация переключения
     themeToggle.style.transform = 'rotate(360deg)';
     setTimeout(() => {
@@ -42,17 +42,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
-
+        
         if (targetId === '#') return;
-
+        
         const targetElement = document.querySelector(targetId);
-
+        
         if (targetElement) {
             targetElement.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
-
+            
             // Обновляем URL без перезагрузки
             history.pushState(null, null, targetId);
         }
@@ -70,7 +70,7 @@ const observer = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
-
+            
             // Если это карточка с возможностями, добавляем класс для анимации
             if (entry.target.classList.contains('card')) {
                 entry.target.classList.add('animated');
@@ -80,7 +80,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Наблюдаем за карточками
-document.querySelectorAll('.card, .download-card, .author-card, .donate-card').forEach(el => {
+document.querySelectorAll('.card, .download-card, .author-card, .donate-card, .community-card').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -91,12 +91,12 @@ document.querySelectorAll('.card, .download-card, .author-card, .donate-card').f
 document.addEventListener('mousemove', (e) => {
     const moveX = (e.clientX / window.innerWidth - 0.5) * 20;
     const moveY = (e.clientY / window.innerHeight - 0.5) * 20;
-
+    
     const platforms = document.querySelector('.platforms');
     if (platforms) {
         platforms.style.transform = `translate(${moveX}px, ${moveY}px)`;
     }
-
+    
     const donateIcon = document.querySelector('.donate-icon');
     if (donateIcon) {
         donateIcon.style.transform = `translate(${moveX/2}px, ${moveY/2}px)`;
@@ -110,7 +110,7 @@ platformIcons.forEach((icon, index) => {
         icon.style.transform = 'scale(1.2) rotate(5deg)';
         icon.style.transition = 'transform 0.3s';
     });
-
+    
     icon.addEventListener('mouseleave', () => {
         icon.style.transform = 'scale(1) rotate(0deg)';
     });
@@ -149,24 +149,24 @@ if (daBtn) {
     setInterval(() => {
         daBtn.style.transform = 'scale(1.05)';
         daBtn.style.boxShadow = '0 10px 25px rgba(255, 77, 77, 0.4)';
-
+        
         setTimeout(() => {
             daBtn.style.transform = 'scale(1)';
             daBtn.style.boxShadow = '0 5px 15px rgba(255, 77, 77, 0.3)';
         }, 200);
     }, 3000);
-
+    
     // Обработчик клика
     daBtn.addEventListener('click', (e) => {
         e.preventDefault();
-
+        
         // Увеличиваем счетчик
         donateStats.clicks++;
         localStorage.setItem('donateClicks', donateStats.clicks);
-
+        
         // Показываем уведомление
         showDonateNotification('Спасибо за интерес к проекту! ❤️');
-
+        
         // Открываем DonationAlerts в новом окне
         setTimeout(() => {
             window.open('https://www.donationalerts.com/r/gr33nyea_the_builder', '_blank');
@@ -178,16 +178,16 @@ if (daBtn) {
 document.querySelectorAll('.quick-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault();
-
+        
         const amount = btn.textContent.replace('₽', '').trim();
-
+        
         // Сохраняем в статистику (просто для примера)
         donateStats.totalAmount += parseInt(amount);
         localStorage.setItem('donateTotal', donateStats.totalAmount);
-
+        
         // Показываем уведомление
         showDonateNotification(`Спасибо за поддержку ${amount}₽! ❤️`);
-
+        
         // Открываем DonationAlerts
         setTimeout(() => {
             window.open('https://www.donationalerts.com/r/gr33nyea_the_builder', '_blank');
@@ -200,12 +200,12 @@ const footerDonate = document.querySelector('.footer-donate');
 if (footerDonate) {
     footerDonate.addEventListener('click', (e) => {
         e.preventDefault();
-
+        
         donateStats.clicks++;
         localStorage.setItem('donateClicks', donateStats.clicks);
-
+        
         showDonateNotification('Спасибо! ❤️');
-
+        
         setTimeout(() => {
             window.open('https://www.donationalerts.com/r/gr33nyea_the_builder', '_blank');
         }, 500);
@@ -220,7 +220,7 @@ function showDonateNotification(message) {
         <i class="fas fa-heart" style="color: #ff4d4d; margin-right: 10px;"></i>
         ${message}
     `;
-
+    
     // Стили для уведомления
     notification.style.cssText = `
         position: fixed;
@@ -238,28 +238,9 @@ function showDonateNotification(message) {
         border-left: 4px solid #ff4d4d;
         animation: slideInRight 0.3s ease;
     `;
-
-    // Добавляем анимацию в head если её нет
-    if (!document.querySelector('#notification-animation')) {
-        const style = document.createElement('style');
-        style.id = 'notification-animation';
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
+    
     document.body.appendChild(notification);
-
+    
     // Удаляем через 3 секунды
     setTimeout(() => {
         notification.style.animation = 'slideInRight 0.3s reverse';
@@ -279,24 +260,18 @@ document.querySelectorAll('.download-btn').forEach(btn => {
             e.preventDefault();
             return;
         }
-
+        
         // Увеличиваем счетчик
         downloadCount++;
         localStorage.setItem('downloadCount', downloadCount);
-
+        
         // Показываем уведомление
         showDonateNotification(`Скачивание #${downloadCount}! Спасибо!`);
-
-        // Обновляем статистику если есть
-        const downloadStat = document.querySelector('.download-stat');
-        if (downloadStat) {
-            downloadStat.textContent = downloadCount;
-        }
     });
 });
 
 // ========== АНИМАЦИЯ ДЛЯ КАРТОЧЕК ==========
-document.querySelectorAll('.card').forEach(card => {
+document.querySelectorAll('.card, .community-card').forEach(card => {
     card.addEventListener('mouseenter', () => {
         const icon = card.querySelector('i');
         if (icon) {
@@ -304,7 +279,7 @@ document.querySelectorAll('.card').forEach(card => {
             icon.style.transition = 'transform 0.3s';
         }
     });
-
+    
     card.addEventListener('mouseleave', () => {
         const icon = card.querySelector('i');
         if (icon) {
@@ -330,9 +305,9 @@ if (donateIcon) {
             animation: floatHeart ${Math.random() * 3 + 2}s ease-out;
             pointer-events: none;
         `;
-
+        
         donateIcon.appendChild(heart);
-
+        
         setTimeout(() => {
             heart.remove();
         }, 3000);
@@ -355,34 +330,22 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// ========== ПАРАЛЛАКС ДЛЯ ФОНА ==========
-const sections = document.querySelectorAll('section');
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-
-    sections.forEach(section => {
-        const speed = 0.5;
-        const yPos = -(scrolled * speed);
-        section.style.backgroundPosition = `center ${yPos}px`;
-    });
-});
-
 // ========== АКТИВНЫЙ ПУНКТ МЕНЮ ==========
-const sections2 = document.querySelectorAll('section');
+const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('nav ul li a');
 
 window.addEventListener('scroll', () => {
     let current = '';
-
-    sections2.forEach(section => {
+    
+    sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-
+        
         if (pageYOffset >= sectionTop - 200) {
             current = section.getAttribute('id');
         }
     });
-
+    
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === `#${current}`) {
@@ -398,7 +361,7 @@ async function loadVersions() {
         if (response.ok) {
             const data = await response.json();
             console.log('Версии загружены:', data.version);
-
+            
             // Обновляем версии на странице
             document.querySelectorAll('.version').forEach(el => {
                 el.textContent = `Версия ${data.version}`;
@@ -462,27 +425,28 @@ scrollTopBtn.addEventListener('mouseleave', () => {
     scrollTopBtn.style.background = 'var(--green)';
 });
 
-// ========== ДОБАВЛЯЕМ СТИЛИ ДЛЯ ACTIVE МЕНЮ ==========
-const menuStyle = document.createElement('style');
-menuStyle.textContent = `
-    nav ul li a.active {
-        color: var(--green) !important;
-        font-weight: bold;
-    }
-    
-    nav ul li a.active::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: var(--green);
-    }
-`;
-document.head.appendChild(menuStyle);
+// ========== СОЦИАЛЬНЫЕ ССЫЛКИ ==========
+// Discord
+const discordLinks = document.querySelectorAll('a[href*="discord.gg"]');
+discordLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        console.log('Переход в Discord');
+        // Можно добавить аналитику
+    });
+});
+
+// GitHub
+const githubLinks = document.querySelectorAll('a[href*="github.com"]');
+githubLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        console.log('Переход на GitHub');
+        // Можно добавить аналитику
+    });
+});
 
 // ========== ИНИЦИАЛИЗАЦИЯ ==========
 console.log('✅ Сайт Рисовалка Pro загружен!');
 console.log('❤️ От Gr33nYea');
 console.log('💰 DonationAlerts: https://www.donationalerts.com/r/gr33nyea_the_builder');
+console.log('💬 Discord: https://discord.gg/MPJUKRsm');
+console.log('🐙 GitHub: https://github.com/Gr33nYea-official/Gr33Yea-official.github.io');
