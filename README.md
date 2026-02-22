@@ -4,7 +4,7 @@
 
 **Ссылки:**
 - [Сайт](https://gr33nyea-official.github.io/Gr33Yea-official.github.io/)
-- [Discord](https://discord.gg/MPJUKRsm)
+
 - [GitHub](https://github.com/Gr33nYea-official/Gr33Yea-official.github.io)
 - [Поддержать](https://www.donationalerts.com/r/gr33nyea_the_builder)
 
